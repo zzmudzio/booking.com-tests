@@ -14,14 +14,22 @@ public class BookingMainPage {
     private final WebDriver driver;
     private final WebDriverWait driverWait;
 
-    @FindBy(xpath = "//span[@class='bui-button__text']")
+    @FindBy(xpath = "//span[@class='bui-button__text']/span[1]")
     private WebElement currencyButtonLocator;
-    @FindBy(xpath = "//span[contains(text(),'PLN')]")
+    @FindBy(xpath = "//div[@class='bui-inline-container__main' and contains(text(), 'polski')]")
     private WebElement currencyPolishZlotyLocator;
-    @FindBy(xpath = "//span[contains(text(),'EUR')]")
+    @FindBy(xpath = "//div[@class='bui-inline-container__main' and contains(text(), 'Euro')]")
     private WebElement currencyEurLocator;
     @FindBy(xpath = "//button[@id='onetrust-accept-btn-handler']")
     private WebElement acceptCookiesButtonLocator;
+    @FindBy(xpath = "//button[@data-modal-id='language-selection']")
+    private WebElement languageButtonLocator;
+    @FindBy(xpath = "//div[@lang='en-gb']")
+    private WebElement britishEnglishLanguageButtonLocator;
+    @FindBy(xpath = "//div[@lang='pl']")
+    private WebElement polishLanguageButtonLocator;
+    @FindBy(tagName = "html")
+    private WebElement htmlTag;
 
 
     public BookingMainPage(WebDriver driver) {
@@ -46,18 +54,50 @@ public class BookingMainPage {
         }
     }
 
-    public String changeCurrencyTo(String currency) {
+    public String getActualCurrency() {
+        return currencyButtonLocator.getText().trim();
+    }
+
+    public void changeCurrencyTo(String currency) {
         currencyButtonLocator.click();
         switch (currency) {
             case "EUR":
-                currencyEurLocator.click();
-                break;
+                try {
+                    driverWait.until(ExpectedConditions.elementToBeClickable(currencyEurLocator));
+                    currencyEurLocator.click();
+                    break;
+                } catch (TimeoutException ignored) {
+                }
             case "PLN":
-                currencyPolishZlotyLocator.click();
-                break;
-            default:
-                return "undefined";
+                try {
+                    driverWait.until(ExpectedConditions.elementToBeClickable(currencyPolishZlotyLocator));
+                    currencyPolishZlotyLocator.click();
+                    break;
+                } catch (TimeoutException ignored) {
+                }
         }
-        return currencyButtonLocator.getText();
+    }
+
+    public String changePageLanguageTo(String desiredLanguage) {
+        languageButtonLocator.click();
+        /* polish is my native language so the website is in polish by default */
+        switch (desiredLanguage) {
+            case "english":
+                try {
+                    driverWait.until(ExpectedConditions.elementToBeClickable(britishEnglishLanguageButtonLocator));
+                    britishEnglishLanguageButtonLocator.click();
+                } catch (TimeoutException ignored) {
+                }
+                break;
+            case "polish":
+                try {
+                    driverWait.until(ExpectedConditions.elementToBeClickable(polishLanguageButtonLocator));
+                    polishLanguageButtonLocator.click();
+                } catch (TimeoutException ignored) {
+                }
+                break;
+        }
+
+        return htmlTag.getAttribute("lang");
     }
 }
