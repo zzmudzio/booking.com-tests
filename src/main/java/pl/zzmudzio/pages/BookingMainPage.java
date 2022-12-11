@@ -1,8 +1,10 @@
 package pl.zzmudzio.pages;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -29,8 +31,15 @@ public class BookingMainPage {
     @FindBy(xpath = "//div[@lang='pl']")
     private WebElement polishLanguageButtonLocator;
     @FindBy(tagName = "html")
-    private WebElement htmlTag;
-
+    private WebElement htmlTagLocator;
+    @FindBy(xpath = "//div[@data-testid=\"destination-container\"]//input[1]")
+    private WebElement destinationLocator;
+    @FindBy(xpath = "//input[@id='ss']")
+    private WebElement alternativeDestinationLocator;
+    @FindBy(xpath = "//button[@data-testid=\"date-display-field-start\"]")
+    private WebElement checkInAndOutDateLocator;
+    @FindBy(xpath = "//button[@data-testid=\"date-display-field-start\"]")
+    private WebElement checkInStartDateButtonLocator;
 
     public BookingMainPage(WebDriver driver) {
         this.driver = driver;
@@ -97,7 +106,49 @@ public class BookingMainPage {
                 }
                 break;
         }
-
-        return htmlTag.getAttribute("lang");
+        return htmlTagLocator.getAttribute("lang");
     }
+
+    public void fillDestinationField(String destinationName) { // the locator seems to change randomly
+        try {
+            driverWait.until(ExpectedConditions.elementToBeClickable(destinationLocator));
+            destinationLocator.click();
+            destinationLocator.sendKeys(destinationName);
+        } catch (TimeoutException te) {
+            try {
+                driverWait.until(ExpectedConditions.elementToBeClickable(alternativeDestinationLocator));
+                alternativeDestinationLocator.click();
+                alternativeDestinationLocator.sendKeys(destinationName);
+            } catch (TimeoutException ignored) {
+            }
+        }
+    }
+
+    public String fillCheckInPeriod() {
+        /*
+           I come to this field always after filling up a destination city field, so there is no need for
+           using e.g. XPath localization, Tab key press is enough. I am performing a bunch of actions, just for
+           being more acquainted with this kind of operations.
+         */
+        try {
+            driverWait.until(ExpectedConditions.elementToBeClickable(checkInStartDateButtonLocator));
+            Actions actions = new Actions(driver);
+            actions.keyDown(Keys.TAB)
+                    .keyUp(Keys.TAB)
+                    .keyDown(Keys.ARROW_DOWN) // to choose current month
+                    .keyUp(Keys.ARROW_DOWN)
+                    .keyDown(Keys.TAB)
+                    .keyUp(Keys.TAB)
+                    .keyDown(Keys.TAB)
+                    .keyUp(Keys.TAB)
+                    .keyDown(Keys.TAB)
+                    .keyUp(Keys.TAB)
+                    .perform();
+            return checkInStartDateButtonLocator.getText();
+        }
+        catch(TimeoutException te) {
+            return null;
+        }
+    }
+
 }
