@@ -85,8 +85,24 @@ public class BookingMainPageTest {
          */
     }
 
-    /*@AfterClass
+    @Test(priority = 5)
+    public void testSearchResult() {
+        try {
+            List<String[]> testDataAttributeAndValue = CsvFile.readTestDataValue("DestinationCity");
+            if (testDataAttributeAndValue != null) {
+                Assert.assertTrue(bookingMainPage.clickSearchButton()
+                        .contains((testDataAttributeAndValue.get(0)[1]).trim()));
+            }
+        } catch (IOException | CsvException exc) {
+            System.out.println("An error has occurred during the csv file read!. Check for the DestinationCity " +
+                    "value correctness.");
+            Assert.fail();
+        }
+
+    }
+
+    @AfterClass
     public void quitDriver() {
         driver.quit();
-    }*/
+    }
 }

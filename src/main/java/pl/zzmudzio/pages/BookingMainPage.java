@@ -38,7 +38,10 @@ public class BookingMainPage {
     private WebElement alternativeDestinationLocator;
     @FindBy(xpath = "//div[@data-placeholder='Zameldowanie']")
     private WebElement checkInDateFieldValueLocator;
-
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement submitButtonLocator;
+    @FindBy(xpath = "//div[@data-component='arp-header']//h1[1]")
+    private WebElement cityNameForFoundedAccomodations;
     public BookingMainPage(WebDriver driver) {
         this.driver = driver;
         this.driverWait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -148,5 +151,17 @@ public class BookingMainPage {
             return null;
         }
     }
+
+    public String clickSearchButton() {
+        try {
+            driverWait.until(ExpectedConditions.elementToBeClickable(submitButtonLocator));
+            submitButtonLocator.click();
+            return cityNameForFoundedAccomodations.getText();
+        } catch (TimeoutException te) {
+            System.out.println("Error: submit button has not been found.");
+            return "";
+        }
+    }
+
 
 }
