@@ -36,10 +36,8 @@ public class BookingMainPage {
     private WebElement destinationLocator;
     @FindBy(xpath = "//input[@id='ss']")
     private WebElement alternativeDestinationLocator;
-    @FindBy(xpath = "//button[@data-testid=\"date-display-field-start\"]")
-    private WebElement checkInAndOutDateLocator;
-    @FindBy(xpath = "//button[@data-testid=\"date-display-field-start\"]")
-    private WebElement checkInStartDateButtonLocator;
+    @FindBy(xpath = "//div[@data-placeholder='Zameldowanie']")
+    private WebElement checkInDateFieldValueLocator;
 
     public BookingMainPage(WebDriver driver) {
         this.driver = driver;
@@ -130,23 +128,23 @@ public class BookingMainPage {
            using e.g. XPath localization, Tab key press is enough. I am performing a bunch of actions, just for
            being more acquainted with this kind of operations.
          */
+        Actions actions = new Actions(driver);
+        actions.keyDown(Keys.TAB)
+                .keyUp(Keys.TAB)
+                .keyDown(Keys.ARROW_DOWN) // to choose current month
+                .keyUp(Keys.ARROW_DOWN)
+                .keyDown(Keys.TAB)
+                .keyUp(Keys.TAB)
+                .keyDown(Keys.ARROW_DOWN) // to choose current month
+                .keyUp(Keys.ARROW_DOWN)
+                .keyDown(Keys.TAB)
+                .keyUp(Keys.TAB)
+                .perform();
         try {
-            driverWait.until(ExpectedConditions.elementToBeClickable(checkInStartDateButtonLocator));
-            Actions actions = new Actions(driver);
-            actions.keyDown(Keys.TAB)
-                    .keyUp(Keys.TAB)
-                    .keyDown(Keys.ARROW_DOWN) // to choose current month
-                    .keyUp(Keys.ARROW_DOWN)
-                    .keyDown(Keys.TAB)
-                    .keyUp(Keys.TAB)
-                    .keyDown(Keys.TAB)
-                    .keyUp(Keys.TAB)
-                    .keyDown(Keys.TAB)
-                    .keyUp(Keys.TAB)
-                    .perform();
-            return checkInStartDateButtonLocator.getText();
-        }
-        catch(TimeoutException te) {
+            driverWait.until(ExpectedConditions.elementToBeClickable(checkInDateFieldValueLocator));
+            return checkInDateFieldValueLocator.getText();
+        } catch (TimeoutException te) {
+            System.out.println("error");
             return null;
         }
     }

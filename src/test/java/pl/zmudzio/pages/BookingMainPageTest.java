@@ -85,8 +85,8 @@ public class BookingMainPageTest {
          */
     }
 
-    @AfterClass
+    /*@AfterClass
     public void quitDriver() {
         driver.quit();
-    }
+    }*/
 }
