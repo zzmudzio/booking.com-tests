@@ -3,7 +3,8 @@
 <suite name="BookingTestSuite" verbose="1">
     <test name="Tests_1">
         <classes>
-            <class name="pl.zmudzio.pages.BookingMainPageTest"/>
+            <!--<class name="pl.zmudzio.pages.BookingMainPageTest"/>-->
+            <class name="pl.zmudzio.pages.BookingRegisterPageTest"/>
         </classes>
     </test>
 </suite>

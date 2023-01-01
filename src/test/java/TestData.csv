@@ -1,2 +1,4 @@
 TestDataName, TestDataValue
 DestinationCity, Warszawa
+IncorrectEmail, incorrectmail
+CorrectEmail, user@some.com

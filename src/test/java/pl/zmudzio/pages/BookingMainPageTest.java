@@ -8,6 +8,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pl.zzmudzio.pages.BookingMainPage;
+import pl.zzmudzio.pages.Pages;
 import pl.zzmudzio.tools.CsvFile;
 import pl.zzmudzio.tools.DateAndTime;
 import pl.zzmudzio.tools.RegEx;
@@ -31,6 +32,7 @@ public class BookingMainPageTest {
 
     @Test(priority = 0)
     public void testMainPageOpeningProperly() {
+        Pages.goToPageAndMaximize(Pages.MAIN_PAGE.getPageAddress(), driver);
         Assert.assertTrue(bookingMainPage.getPageTitle().contains("Booking.com"));
         if (!bookingMainPage.acceptCookies()) {
             System.out.println("Cookies preferences window didn\'t appear.");
