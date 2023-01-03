@@ -4,7 +4,8 @@ import org.openqa.selenium.WebDriver;
 
 public enum Pages {
     MAIN_PAGE("http://booking.com"),
-    REGISTER_PAGE("https://account.booking.com/register");
+    REGISTER_PAGE("https://account.booking.com/register"),
+    RENT_A_CAR_PAGE("http://booking.com/cars");
     private final String pageAddress;
 
     private Pages(String pageAddress) {
