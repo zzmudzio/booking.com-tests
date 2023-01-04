@@ -21,15 +21,33 @@ public class BookingRentACarPage {
     }
 
     @FindBy(xpath = "//input[@id='ss_origin']")
-    private WebElement carPickUpPlaceLocator;
+    private WebElement carPickUpCityLocator;
 
-    public void fillPickUpPlace(String cityName) {
+    @FindBy(xpath = "//li[contains(@data-value, \"Chopin\")]")
+    private WebElement carPickUpExactPlaceLocator;
+
+    @FindBy(xpath = "//button[@data-sb-id=\"main\"]")
+    private WebElement searchCarButtonLocator;
+
+    public void fillPickUpCity(String cityName) {
         try {
-            driverWait.until(ExpectedConditions.visibilityOf(carPickUpPlaceLocator));
-            carPickUpPlaceLocator.sendKeys(cityName);
+            driverWait.until(ExpectedConditions.visibilityOf(carPickUpCityLocator));
+            carPickUpCityLocator.sendKeys(cityName);
         } catch (TimeoutException te) {
             System.out.println("Error: elemenet has not been found.");
         }
     }
+
+    public WebElement choosePickupLocation() {
+        try {
+            driverWait.until(ExpectedConditions.elementToBeClickable(carPickUpExactPlaceLocator));
+            carPickUpExactPlaceLocator.click();
+            return searchCarButtonLocator;
+        } catch (TimeoutException te) {
+            System.out.println("Error: element has not been found. ");
+            return null;
+        }
+    }
+
 
 }

@@ -34,10 +34,15 @@ public class BookingRentACarPageTest {
             List<String[]> testDataAttributeAndValue = CsvFile.readTestDataValue("DestinationCity");
             BookingMainPage bookingMainPage = new BookingMainPage(driver);
             bookingMainPage.acceptCookies();
-            bookingRentACarPage.fillPickUpPlace(testDataAttributeAndValue.get(0)[1]);
+            bookingRentACarPage.fillPickUpCity(testDataAttributeAndValue.get(0)[1]);
         } catch (CsvException | IOException ce) {
             System.out.println("Error during csv reading.");
         }
+    }
+
+    @Test(priority = 1)
+    public void testChoosingExactPickUpLocation() {
+        bookingRentACarPage.choosePickupLocation().click();
     }
 
     @AfterClass
