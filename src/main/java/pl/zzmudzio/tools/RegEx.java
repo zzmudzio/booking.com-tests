@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegEx {
     public static String getDayOfMonthFromGivenString(String dateToExtract) {
-        Pattern pattern = Pattern.compile("(^[a-z.\\s]+)([0-9]+)(.*)");
+        Pattern pattern = Pattern.compile("(^[a-ząęźćńóś.\\s]+)([0-9]+)(.*)");
         Matcher matcher = pattern.matcher(dateToExtract);
         if(matcher.find()) {
             return matcher.group(2);
